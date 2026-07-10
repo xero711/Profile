@@ -2,7 +2,7 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#0a0a0d">
     <meta name="description" content="XERO — AI、Discord Bot、Windowsアプリ、Webサービスの開発実績">
     <meta property="og:type" content="website">
@@ -41,6 +41,7 @@
         <a href="#connect">Connect</a>
       </nav>
       <span class="header-meta">TOKYO · JP / 19</span>
+      <span class="mobile-header-status"><i aria-hidden="true"></i>AVAILABLE / 19</span>
     </header>
 
     <main id="main">
@@ -85,6 +86,10 @@
                 <div class="sigil-stack__plate sigil-stack__plate--front"></div>
               </div>
               <span class="hero-note hero-note--top">MONOLITH / X</span>
+              <div class="mobile-hero-console">
+                <span>OBJECT / 01</span>
+                <b>MONOLITH X</b>
+              </div>
             </div>
           </div>
           <div class="hero-scroll-cue" aria-hidden="true"><span></span>SCROLL</div>
@@ -161,8 +166,14 @@
           </dl>
         </div>
 
+        <nav class="mobile-project-nav" aria-label="作品内ナビゲーション">
+          <a href="#work-discat"><small>01</small><span>Discat</span></a>
+          <a href="#work-ziper"><small>02</small><span>Ziper</span></a>
+          <a href="#work-youtube"><small>03</small><span>Youtube</span></a>
+        </nav>
+
         <div class="project-list">
-          <div class="project-anchor project-anchor--featured" data-scroll-card>
+          <div class="project-anchor project-anchor--featured" id="work-discat" data-scroll-card>
             <div class="card-motion">
               <article class="project project--featured depth-card__surface" data-tilt-card>
                 <div class="project-media">
@@ -190,7 +201,7 @@
           </div>
 
           <div class="project-secondary-grid">
-            <div class="project-anchor" data-scroll-card>
+            <div class="project-anchor" id="work-ziper" data-scroll-card>
               <div class="card-motion">
                 <article class="project project--secondary depth-card__surface" data-tilt-card>
                   <div class="project-media">
@@ -215,7 +226,7 @@
               </div>
             </div>
 
-            <div class="project-anchor" data-scroll-card>
+            <div class="project-anchor" id="work-youtube" data-scroll-card>
               <div class="card-motion">
                 <article class="project project--secondary depth-card__surface" data-tilt-card>
                   <div class="project-media">
@@ -332,6 +343,29 @@
       <p>TOKYO · JAPAN / © 2026</p>
       <a href="#home">BACK TO TOP ↑</a>
     </footer>
+
+    <nav class="mobile-dock" aria-label="スマートフォン用ナビゲーション">
+      <a href="#home">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20h-5v-6H9v6H4Z"/></svg>
+        <span>Home</span>
+      </a>
+      <a href="#profile">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 20c.6-4 2.8-6 6.5-6s5.9 2 6.5 6"/></svg>
+        <span>Profile</span>
+      </a>
+      <a href="#works">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="7" width="17" height="12" rx="2"/><path d="M9 7V4.5h6V7M3.5 12h17"/></svg>
+        <span>Work</span>
+      </a>
+      <a href="#capabilities">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4.5-8 4.5-8-4.5Zm8 9-8 4.5L4 12m16 4.5L12 21l-8-4.5"/></svg>
+        <span>Stack</span>
+      </a>
+      <a href="#connect">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5h14v10H9l-4 3Z"/><path d="M8.5 9.5h7m-7 3h4"/></svg>
+        <span>Connect</span>
+      </a>
+    </nav>
 
     <script src="script.js"></script>
   </body>

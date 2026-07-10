@@ -3,6 +3,7 @@
 
   const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const finePointerQuery = window.matchMedia('(pointer: fine)');
+  const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
   const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
 
   const header = document.getElementById('siteHeader');
@@ -14,17 +15,18 @@
   const scrollAnchors = [...document.querySelectorAll('[data-scroll-card]')];
   const motionScenes = [...document.querySelectorAll('[data-motion-scene]')];
   const tiltCards = [...document.querySelectorAll('[data-tilt-card]')];
-  const navLinks = [...document.querySelectorAll('.site-nav a')];
-  const navSections = navLinks
+  const navLinks = [...document.querySelectorAll('.site-nav a, .mobile-dock a')];
+  const navSections = [...new Set(navLinks
     .map((link) => document.querySelector(link.getAttribute('href')))
-    .filter(Boolean);
+    .filter(Boolean))]
+    .sort((first, second) => first.offsetTop - second.offsetTop);
 
   let frameRequested = false;
   let pointerFrameRequested = false;
   let pendingPointer = null;
 
   function motionScale() {
-    if (window.innerWidth <= 700) return 0.34;
+    if (window.innerWidth <= 700) return coarsePointerQuery.matches ? 0.24 : 0.3;
     if (window.innerWidth <= 960) return 0.62;
     return 1;
   }
@@ -117,9 +119,10 @@
   function updateScrollEffects() {
     frameRequested = false;
 
-    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const scrollRange = Math.max(document.documentElement.scrollHeight - viewportHeight, 1);
+    const scroller = document.scrollingElement || document.documentElement;
+    const viewportHeight = window.innerHeight || scroller.clientHeight;
+    const scrollTop = scroller.scrollTop;
+    const scrollRange = Math.max(scroller.scrollHeight - scroller.clientHeight, 1);
 
     // Read phase: every layout measurement is collected before any style write.
     const heroRect = heroScene?.getBoundingClientRect();
@@ -143,9 +146,11 @@
     progressBar?.style.setProperty('transform', `scaleX(${clamp(scrollTop / scrollRange).toFixed(5)})`);
 
     const navigationProbe = viewportHeight * 0.42;
-    const activeSection = navigationMeasurements.find(({ rect }) => (
-      rect.top <= navigationProbe && rect.bottom > navigationProbe
-    ))?.section;
+    const atDocumentEnd = scrollTop + scroller.clientHeight >= scroller.scrollHeight - 4;
+    const passedSections = navigationMeasurements.filter(({ rect }) => rect.top <= navigationProbe);
+    const activeSection = atDocumentEnd
+      ? navSections[navSections.length - 1]
+      : passedSections[passedSections.length - 1]?.section;
 
     navLinks.forEach((link) => {
       const isActive = Boolean(activeSection) && link.getAttribute('href') === `#${activeSection.id}`;
@@ -251,6 +256,33 @@
   }
 
   function resetMotion() {
+    [
+      '--hero-bg-y',
+      '--hero-copy-y',
+      '--hero-copy-opacity',
+      '--cue-opacity',
+    ].forEach((property) => heroSticky?.style.removeProperty(property));
+
+    [
+      '--hero-camera-y',
+      '--hero-camera-scale',
+      '--hero-x',
+      '--hero-y',
+      '--hero-z',
+      '--hero-rx',
+      '--hero-ry',
+      '--hero-rz',
+      '--hero-scale',
+      '--number-y',
+      '--number-z',
+      '--number-ry',
+      '--ring-rotation',
+      '--ring-rotation-reverse',
+      '--halo-scale',
+      '--tilt-rx',
+      '--tilt-ry',
+    ].forEach((property) => heroVisual?.style.removeProperty(property));
+
     scrollAnchors.forEach((anchor) => {
       anchor.classList.remove('is-motion-near');
       const motion = anchor.querySelector('.card-motion');
@@ -259,6 +291,8 @@
       motion.style.setProperty('--card-z', '0px');
       motion.style.setProperty('--card-rx', '0deg');
       motion.style.setProperty('--card-ry', '0deg');
+      anchor.querySelector('.project-screen img')?.style.removeProperty('--media-y');
+      anchor.querySelector('.project-copy')?.style.removeProperty('--copy-y');
     });
     document.querySelectorAll('[data-depth-plane]').forEach((plane) => {
       plane.style.setProperty('--plane-y', '0px');
@@ -266,6 +300,7 @@
       plane.style.setProperty('--plane-rx', '0deg');
       plane.style.setProperty('--plane-ry', '0deg');
     });
+    document.querySelector('.contact-background')?.style.removeProperty('--contact-bg-y');
     tiltCards.forEach(resetTilt);
   }
 
@@ -280,4 +315,5 @@
     if (reduceMotionQuery.matches) resetMotion();
     else requestScrollUpdate();
   });
+  coarsePointerQuery.addEventListener?.('change', requestScrollUpdate);
 })();
