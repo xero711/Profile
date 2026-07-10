@@ -1,225 +1,283 @@
-// Typing animation
-const typingLines = [
-  'PROGRAMMER / AI DEVELOPER',
-  'DISCORD BOT CREATOR',
-  'CUSTOM PC BUILDER',
-  'TOKYO BASED // JAPAN',
-];
+(() => {
+  'use strict';
 
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const typingEl = document.getElementById('typingText');
-let lineIndex = 0;
-let charIndex = 0;
-let deleting = false;
+  const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const finePointerQuery = window.matchMedia('(pointer: fine)');
+  const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
 
-function typeLoop() {
-  const current = typingLines[lineIndex];
+  const header = document.getElementById('siteHeader');
+  const progressBar = document.getElementById('scrollProgress');
+  const heroScene = document.querySelector('[data-hero-scene]');
+  const heroSticky = heroScene?.querySelector('.hero-sticky');
+  const heroVisual = heroScene?.querySelector('.hero-visual');
+  const heroSigil = heroScene?.querySelector('[data-tilt-surface]');
+  const scrollAnchors = [...document.querySelectorAll('[data-scroll-card]')];
+  const motionScenes = [...document.querySelectorAll('[data-motion-scene]')];
+  const tiltCards = [...document.querySelectorAll('[data-tilt-card]')];
+  const navLinks = [...document.querySelectorAll('.site-nav a')];
+  const navSections = navLinks
+    .map((link) => document.querySelector(link.getAttribute('href')))
+    .filter(Boolean);
 
-  if (!deleting) {
-    typingEl.textContent = current.slice(0, ++charIndex);
-    if (charIndex === current.length) {
-      deleting = true;
-      setTimeout(typeLoop, 1800);
+  let frameRequested = false;
+  let pointerFrameRequested = false;
+  let pendingPointer = null;
+
+  function motionScale() {
+    if (window.innerWidth <= 700) return 0.34;
+    if (window.innerWidth <= 960) return 0.62;
+    return 1;
+  }
+
+  function setHeroProgress(progress) {
+    if (!heroSticky || !heroVisual || reduceMotionQuery.matches) return;
+
+    const eased = progress * progress * (3 - 2 * progress);
+    const scale = motionScale();
+    const copyOpacity = clamp((0.72 - progress) / 0.42, 0, 1);
+
+    heroSticky.style.setProperty('--hero-bg-y', `${(eased * 22 * scale).toFixed(2)}px`);
+    heroSticky.style.setProperty('--hero-copy-y', `${(-eased * 52 * scale).toFixed(2)}px`);
+    heroSticky.style.setProperty('--hero-copy-opacity', copyOpacity.toFixed(3));
+    heroSticky.style.setProperty('--cue-opacity', clamp(1 - progress * 3, 0, 1).toFixed(3));
+
+    heroVisual.style.setProperty('--hero-camera-y', `${(-eased * 18 * scale).toFixed(2)}px`);
+    heroVisual.style.setProperty('--hero-camera-scale', (1 + eased * 0.055 * scale).toFixed(3));
+    heroVisual.style.setProperty('--hero-x', `${(-8 + eased * 18 * scale).toFixed(2)}px`);
+    heroVisual.style.setProperty('--hero-y', `${(12 - eased * 40 * scale).toFixed(2)}px`);
+    heroVisual.style.setProperty('--hero-z', `${(-10 + eased * 46 * scale).toFixed(2)}px`);
+    heroVisual.style.setProperty('--hero-rx', `${(6 - eased * 8 * scale).toFixed(2)}deg`);
+    heroVisual.style.setProperty('--hero-ry', `${(-10 + eased * 18 * scale).toFixed(2)}deg`);
+    heroVisual.style.setProperty('--hero-rz', `${(-2 + eased * 3 * scale).toFixed(2)}deg`);
+    heroVisual.style.setProperty('--hero-scale', (0.95 + eased * 0.075 * scale).toFixed(3));
+    heroVisual.style.setProperty('--number-y', `${(-eased * 54 * scale).toFixed(2)}px`);
+    heroVisual.style.setProperty('--number-z', `${(-320 + eased * 18 * scale).toFixed(2)}px`);
+    heroVisual.style.setProperty('--number-ry', `${(6 + eased * 5 * scale).toFixed(2)}deg`);
+    heroVisual.style.setProperty('--ring-rotation', `${(10 + eased * 38 * scale).toFixed(2)}deg`);
+    heroVisual.style.setProperty('--ring-rotation-reverse', `${(-10 - eased * 32 * scale).toFixed(2)}deg`);
+    heroVisual.style.setProperty('--halo-scale', (1 + eased * 0.14 * scale).toFixed(3));
+  }
+
+  function writeCardMotion(measurement, viewportHeight) {
+    if (reduceMotionQuery.matches) return;
+
+    const { anchor, motion, rect, index } = measurement;
+    if (!motion) return;
+
+    const scale = motionScale();
+    const cardCenter = rect.top + rect.height / 2;
+    const travel = viewportHeight / 2 + rect.height / 2;
+    const distance = clamp((cardCenter - viewportHeight / 2) / travel, -1, 1);
+    const near = rect.bottom > -viewportHeight * 0.55 && rect.top < viewportHeight * 1.55;
+    const depth = -Math.abs(distance) * 48 * scale;
+    const vertical = distance >= 0 ? distance * 58 * scale : distance * 18 * scale;
+    const rotateX = distance * 2.8 * scale;
+    const rotateY = distance * (index % 2 === 0 ? -0.8 : 0.8) * scale;
+    const media = anchor.querySelector('.project-screen img');
+    const copy = anchor.querySelector('.project-copy');
+
+    anchor.classList.toggle('is-motion-near', near);
+    motion.style.setProperty('--card-y', `${vertical.toFixed(2)}px`);
+    motion.style.setProperty('--card-z', `${depth.toFixed(2)}px`);
+    motion.style.setProperty('--card-rx', `${rotateX.toFixed(2)}deg`);
+    motion.style.setProperty('--card-ry', `${rotateY.toFixed(2)}deg`);
+
+    if (media) media.style.setProperty('--media-y', `${(-distance * 14 * scale).toFixed(2)}px`);
+    if (copy) copy.style.setProperty('--copy-y', `${(distance * 8 * scale).toFixed(2)}px`);
+  }
+
+  function writeSceneMotion(measurement, viewportHeight) {
+    if (reduceMotionQuery.matches) return;
+
+    const { scene, rect } = measurement;
+    const progress = clamp((viewportHeight - rect.top) / (viewportHeight + rect.height));
+    const centered = (progress - 0.5) * 2;
+    const scale = motionScale();
+    const planes = [...scene.querySelectorAll('[data-depth-plane]')];
+
+    planes.forEach((plane, index) => {
+      const depth = Number.parseFloat(plane.dataset.depthPlane || '1');
+      const direction = index % 2 === 0 ? 1 : -1;
+      const y = -centered * 18 * depth * scale;
+      const z = (12 - Math.abs(centered) * 20) * depth * scale;
+      const rotateX = centered * -2.2 * depth * scale;
+      const rotateY = centered * direction * 2.6 * depth * scale;
+      plane.style.setProperty('--plane-y', `${y.toFixed(2)}px`);
+      plane.style.setProperty('--plane-z', `${z.toFixed(2)}px`);
+      plane.style.setProperty('--plane-rx', `${rotateX.toFixed(2)}deg`);
+      plane.style.setProperty('--plane-ry', `${rotateY.toFixed(2)}deg`);
+    });
+
+    const contactBackground = scene.querySelector('.contact-background');
+    if (contactBackground) {
+      contactBackground.style.setProperty('--contact-bg-y', `${(centered * 18 * scale).toFixed(2)}px`);
+    }
+  }
+
+  function updateScrollEffects() {
+    frameRequested = false;
+
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const scrollRange = Math.max(document.documentElement.scrollHeight - viewportHeight, 1);
+
+    // Read phase: every layout measurement is collected before any style write.
+    const heroRect = heroScene?.getBoundingClientRect();
+    const cardMeasurements = scrollAnchors.map((anchor, index) => ({
+      anchor,
+      index,
+      motion: anchor.querySelector('.card-motion'),
+      rect: anchor.getBoundingClientRect(),
+    }));
+    const sceneMeasurements = motionScenes.map((scene) => ({
+      scene,
+      rect: scene.getBoundingClientRect(),
+    }));
+    const navigationMeasurements = navSections.map((section) => ({
+      section,
+      rect: section.getBoundingClientRect(),
+    }));
+
+    // Write phase.
+    header?.classList.toggle('is-scrolled', scrollTop > 24);
+    progressBar?.style.setProperty('transform', `scaleX(${clamp(scrollTop / scrollRange).toFixed(5)})`);
+
+    const navigationProbe = viewportHeight * 0.42;
+    const activeSection = navigationMeasurements.find(({ rect }) => (
+      rect.top <= navigationProbe && rect.bottom > navigationProbe
+    ))?.section;
+
+    navLinks.forEach((link) => {
+      const isActive = Boolean(activeSection) && link.getAttribute('href') === `#${activeSection.id}`;
+      link.classList.toggle('is-active', isActive);
+      if (isActive) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+
+    if (heroRect && heroScene && !reduceMotionQuery.matches) {
+      const sceneRange = Math.max(heroRect.height - viewportHeight, 1);
+      setHeroProgress(clamp(-heroRect.top / sceneRange));
+    }
+
+    cardMeasurements.forEach((measurement) => writeCardMotion(measurement, viewportHeight));
+    sceneMeasurements.forEach((measurement) => writeSceneMotion(measurement, viewportHeight));
+  }
+
+  function requestScrollUpdate() {
+    if (frameRequested) return;
+    frameRequested = true;
+    window.requestAnimationFrame(updateScrollEffects);
+  }
+
+  function setupReveal() {
+    const items = [...document.querySelectorAll('.reveal-item')];
+
+    if (reduceMotionQuery.matches || !('IntersectionObserver' in window)) {
+      items.forEach((item) => item.classList.add('is-visible'));
       return;
     }
-  } else {
-    typingEl.textContent = current.slice(0, --charIndex);
-    if (charIndex === 0) {
-      deleting = false;
-      lineIndex = (lineIndex + 1) % typingLines.length;
-    }
+
+    document.querySelectorAll('section').forEach((section) => {
+      [...section.querySelectorAll('.reveal-item')].forEach((item, index) => {
+        item.classList.add('reveal-pending');
+        item.style.setProperty('--reveal-delay', `${Math.min(index, 5) * 45}ms`);
+      });
+    });
+
+    const observer = new IntersectionObserver((entries, revealObserver) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -6% 0px',
+    });
+
+    items.forEach((item) => observer.observe(item));
   }
 
-  setTimeout(typeLoop, deleting ? 34 : 58);
-}
+  function writePointerTilt() {
+    pointerFrameRequested = false;
+    if (!pendingPointer || reduceMotionQuery.matches || !finePointerQuery.matches) return;
 
-if (typingEl) {
-  if (prefersReducedMotion) {
-    typingEl.textContent = typingLines[0];
-  } else {
-    typeLoop();
-  }
-}
-
-// BGM player
-const audio = document.getElementById('bgm');
-const bgmToggle = document.getElementById('bgmToggle');
-let playing = false;
-
-if (audio && bgmToggle) {
-  audio.volume = 0.05;
-  bgmToggle.classList.add('paused');
-
-  const playBgm = () => {
-    audio.play().then(() => {
-      playing = true;
-      bgmToggle.classList.remove('paused');
-    }).catch(() => {});
-  };
-
-  bgmToggle.addEventListener('click', (event) => {
-    event.stopPropagation();
-    if (playing) {
-      audio.pause();
-      playing = false;
-      bgmToggle.classList.add('paused');
-    } else {
-      playBgm();
-    }
-  });
-
-  document.addEventListener('click', () => {
-    if (!playing) playBgm();
-  }, { once: true });
-}
-
-// Particle canvas
-const canvas = document.getElementById('particles');
-const ctx = canvas?.getContext('2d');
-let particles = [];
-let sparks = [];
-let dpr = 1;
-
-function resizeCanvas() {
-  if (!canvas || !ctx) return;
-  dpr = Math.min(window.devicePixelRatio || 1, 2);
-  canvas.width = Math.floor(window.innerWidth * dpr);
-  canvas.height = Math.floor(window.innerHeight * dpr);
-  canvas.style.width = `${window.innerWidth}px`;
-  canvas.style.height = `${window.innerHeight}px`;
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-  const small = window.innerWidth < 720;
-  const count = prefersReducedMotion ? 20 : (small ? 54 : 105);
-  particles = Array.from({ length: count }, () => ({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    vx: (Math.random() - 0.5) * (small ? 0.32 : 0.48),
-    vy: (Math.random() - 0.5) * (small ? 0.32 : 0.48),
-    size: Math.random() * 1.8 + 0.45,
-    alpha: Math.random() * 0.5 + 0.12,
-    hue: Math.random() > 0.74 ? 'cyan' : 'purple',
-    phase: Math.random() * Math.PI * 2,
-  }));
-
-  sparks = Array.from({ length: small ? 3 : 6 }, () => ({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    speed: Math.random() * 1.8 + 1.2,
-    delay: Math.random() * 500,
-  }));
-}
-
-function drawParticles(time = 0) {
-  if (!canvas || !ctx) return;
-  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  ctx.globalCompositeOperation = 'lighter';
-
-  for (const p of particles) {
-    p.x += p.vx;
-    p.y += p.vy;
-    if (p.x < -10) p.x = window.innerWidth + 10;
-    if (p.x > window.innerWidth + 10) p.x = -10;
-    if (p.y < -10) p.y = window.innerHeight + 10;
-    if (p.y > window.innerHeight + 10) p.y = -10;
-
-    const pulse = Math.sin(time * 0.002 + p.phase) * 0.24;
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.size + pulse, 0, Math.PI * 2);
-    ctx.fillStyle = p.hue === 'cyan'
-      ? `rgba(0, 231, 255, ${p.alpha})`
-      : `rgba(193, 102, 255, ${p.alpha})`;
-    ctx.fill();
+    const { target, clientX, clientY, amplitude } = pendingPointer;
+    pendingPointer = null;
+    const rect = target.getBoundingClientRect();
+    const x = clamp((clientX - rect.left) / rect.width, 0, 1);
+    const y = clamp((clientY - rect.top) / rect.height, 0, 1);
+    target.style.setProperty('--pointer-x', `${(x * 100).toFixed(2)}%`);
+    target.style.setProperty('--pointer-y', `${(y * 100).toFixed(2)}%`);
+    target.style.setProperty('--pointer-rx', `${((0.5 - y) * amplitude).toFixed(2)}deg`);
+    target.style.setProperty('--pointer-ry', `${((x - 0.5) * amplitude).toFixed(2)}deg`);
   }
 
-  const linkDistance = window.innerWidth < 720 ? 92 : 130;
-  for (let i = 0; i < particles.length; i++) {
-    for (let j = i + 1; j < particles.length; j++) {
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
-      const dist = Math.hypot(dx, dy);
-      if (dist < linkDistance) {
-        ctx.beginPath();
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.strokeStyle = `rgba(139, 23, 255, ${0.13 * (1 - dist / linkDistance)})`;
-        ctx.lineWidth = 0.55;
-        ctx.stroke();
-      }
-    }
+  function queuePointerTilt(target, event, amplitude) {
+    pendingPointer = { target, clientX: event.clientX, clientY: event.clientY, amplitude };
+    if (pointerFrameRequested) return;
+    pointerFrameRequested = true;
+    window.requestAnimationFrame(writePointerTilt);
   }
 
-  for (const spark of sparks) {
-    spark.x += spark.speed;
-    spark.y += spark.speed * 0.22;
-    if (spark.x > window.innerWidth + 120 || spark.y > window.innerHeight + 60) {
-      spark.x = -140 - spark.delay * 0.12;
-      spark.y = Math.random() * window.innerHeight * 0.72;
+  function resetTilt(target) {
+    target.style.setProperty('--pointer-rx', '0deg');
+    target.style.setProperty('--pointer-ry', '0deg');
+    target.style.setProperty('--pointer-x', '50%');
+    target.style.setProperty('--pointer-y', '50%');
+  }
+
+  function setupPointerTilt() {
+    if (heroVisual && heroSigil) {
+      heroVisual.addEventListener('pointermove', (event) => {
+        if (reduceMotionQuery.matches || !finePointerQuery.matches) return;
+        const rect = heroVisual.getBoundingClientRect();
+        const x = clamp((event.clientX - rect.left) / rect.width, 0, 1) - 0.5;
+        const y = clamp((event.clientY - rect.top) / rect.height, 0, 1) - 0.5;
+        heroVisual.style.setProperty('--tilt-rx', `${(-y * 3.5).toFixed(2)}deg`);
+        heroVisual.style.setProperty('--tilt-ry', `${(x * 4.2).toFixed(2)}deg`);
+      }, { passive: true });
+
+      heroVisual.addEventListener('pointerleave', () => {
+        heroVisual.style.setProperty('--tilt-rx', '0deg');
+        heroVisual.style.setProperty('--tilt-ry', '0deg');
+      });
     }
 
-    const grad = ctx.createLinearGradient(spark.x - 90, spark.y, spark.x, spark.y);
-    grad.addColorStop(0, 'rgba(139, 23, 255, 0)');
-    grad.addColorStop(0.75, 'rgba(193, 102, 255, 0.4)');
-    grad.addColorStop(1, 'rgba(0, 231, 255, 0.95)');
-    ctx.strokeStyle = grad;
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(spark.x - 90, spark.y - 14);
-    ctx.lineTo(spark.x, spark.y);
-    ctx.stroke();
-  }
-
-  if (!prefersReducedMotion) requestAnimationFrame(drawParticles);
-}
-
-resizeCanvas();
-drawParticles();
-window.addEventListener('resize', resizeCanvas, { passive: true });
-
-// Scroll reveal
-const revealItems = document.querySelectorAll('.reveal');
-const revealObserver = new IntersectionObserver((entries, observer) => {
-  for (const entry of entries) {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('is-visible');
-      observer.unobserve(entry.target);
-    }
-  }
-}, { threshold: 0.14, rootMargin: '0px 0px -48px 0px' });
-
-revealItems.forEach((item, index) => {
-  item.style.setProperty('--delay', `${Math.min(index % 6, 5) * 60}ms`);
-  revealObserver.observe(item);
-});
-
-// Navigation highlight
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav-links a');
-const navObserver = new IntersectionObserver((entries) => {
-  for (const entry of entries) {
-    if (!entry.isIntersecting) continue;
-    navLinks.forEach((link) => {
-      link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`);
+    tiltCards.forEach((card) => {
+      card.addEventListener('pointermove', (event) => queuePointerTilt(card, event, 4.2), { passive: true });
+      card.addEventListener('pointerleave', () => resetTilt(card));
     });
   }
-}, { threshold: 0.42 });
 
-sections.forEach((section) => navObserver.observe(section));
+  function resetMotion() {
+    scrollAnchors.forEach((anchor) => {
+      anchor.classList.remove('is-motion-near');
+      const motion = anchor.querySelector('.card-motion');
+      if (!motion) return;
+      motion.style.setProperty('--card-y', '0px');
+      motion.style.setProperty('--card-z', '0px');
+      motion.style.setProperty('--card-rx', '0deg');
+      motion.style.setProperty('--card-ry', '0deg');
+    });
+    document.querySelectorAll('[data-depth-plane]').forEach((plane) => {
+      plane.style.setProperty('--plane-y', '0px');
+      plane.style.setProperty('--plane-z', '0px');
+      plane.style.setProperty('--plane-rx', '0deg');
+      plane.style.setProperty('--plane-ry', '0deg');
+    });
+    tiltCards.forEach(resetTilt);
+  }
 
-// Hero parallax
-const hero = document.querySelector('.hero');
-const finePointer = window.matchMedia('(pointer: fine)').matches;
+  setupReveal();
+  setupPointerTilt();
+  updateScrollEffects();
 
-if (hero && finePointer && !prefersReducedMotion) {
-  window.addEventListener('pointermove', (event) => {
-    const x = (event.clientX / window.innerWidth - 0.5) * 2;
-    const y = (event.clientY / window.innerHeight - 0.5) * 2;
-    hero.style.setProperty('--mx', x.toFixed(3));
-    hero.style.setProperty('--my', y.toFixed(3));
-  }, { passive: true });
-
-  document.addEventListener('pointerleave', () => {
-    hero.style.setProperty('--mx', '0');
-    hero.style.setProperty('--my', '0');
+  window.addEventListener('scroll', requestScrollUpdate, { passive: true });
+  window.addEventListener('resize', requestScrollUpdate, { passive: true });
+  window.addEventListener('pageshow', requestScrollUpdate, { passive: true });
+  reduceMotionQuery.addEventListener?.('change', () => {
+    if (reduceMotionQuery.matches) resetMotion();
+    else requestScrollUpdate();
   });
-}
+})();

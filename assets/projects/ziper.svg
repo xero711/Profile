@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Ziper</title>
+  <desc id="desc">GPUとCPUを使ったファイル圧縮を表現した立体的なアーカイブ</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#08090d"/><stop offset="1" stop-color="#17131f"/></linearGradient>
+    <linearGradient id="purple" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c7b9ff"/><stop offset=".48" stop-color="#9373ed"/><stop offset="1" stop-color="#4f359f"/></linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f2efe8" stop-opacity=".8"/><stop offset=".2" stop-color="#777785"/><stop offset=".55" stop-color="#242530"/><stop offset="1" stop-color="#aaa7a1"/></linearGradient>
+    <linearGradient id="face" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#22232d"/><stop offset="1" stop-color="#111219"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#9b7bff" stop-opacity=".42"/><stop offset="1" stop-color="#9b7bff" stop-opacity="0"/></radialGradient>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse"><path d="M64 0H0V64" fill="none" stroke="#fff" stroke-opacity=".035"/></pattern>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="40" stdDeviation="45" flood-color="#000" flood-opacity=".65"/></filter>
+    <filter id="soft"><feGaussianBlur stdDeviation="22"/></filter>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+  <rect width="1600" height="1000" fill="url(#grid)"/>
+  <ellipse cx="800" cy="726" rx="570" ry="290" fill="url(#glow)" opacity=".75"/>
+  <path d="M0 824h1600" stroke="#f2efe8" stroke-opacity=".08"/>
+
+  <g opacity=".65">
+    <path d="M210 218h260" stroke="#f2efe8" stroke-opacity=".13"/><circle cx="210" cy="218" r="4" fill="#c4b5ff"/>
+    <text x="210" y="198" fill="#8e8e98" font-family="monospace" font-size="11" letter-spacing="3">SAFE EXTRACTION</text>
+    <path d="M1130 214h260" stroke="#f2efe8" stroke-opacity=".13"/><circle cx="1390" cy="214" r="4" fill="#c4b5ff"/>
+    <text x="1130" y="194" fill="#8e8e98" font-family="monospace" font-size="11" letter-spacing="3">GPU / CPU FALLBACK</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <path d="M473 358 800 174l327 184-327 188z" fill="#24242e" stroke="#f2efe8" stroke-opacity=".2"/>
+    <path d="m473 358 327 188v340L473 696z" fill="url(#face)" stroke="#f2efe8" stroke-opacity=".14"/>
+    <path d="m800 546 327-188v338L800 886z" fill="#0e0f15" stroke="#f2efe8" stroke-opacity=".14"/>
+  </g>
+
+  <g>
+    <path d="M572 356 800 228l228 128-228 131z" fill="url(#purple)" opacity=".94"/>
+    <path d="M627 356 800 260l173 96-173 99z" fill="#14151c" stroke="#f2efe8" stroke-opacity=".22"/>
+    <path d="M715 308 800 260l85 47-85 50z" fill="#c4b5ff" fill-opacity=".18"/>
+    <text x="800" y="341" text-anchor="middle" fill="#f2efe8" font-family="Arial, sans-serif" font-size="30" font-weight="700">Z</text>
+  </g>
+
+  <g>
+    <path d="M772 472v356" stroke="#0a0a0e" stroke-width="34"/>
+    <path d="M828 472v324" stroke="#0a0a0e" stroke-width="34"/>
+    <g fill="url(#metal)">
+      <path d="M742 492h56v28h-56zM742 545h56v28h-56zM742 598h56v28h-56zM742 651h56v28h-56zM742 704h56v28h-56zM742 757h56v28h-56zM742 810h56v28h-56z"/>
+      <path d="M802 518h56v28h-56zM802 571h56v28h-56zM802 624h56v28h-56zM802 677h56v28h-56zM802 730h56v28h-56zM802 783h56v28h-56z"/>
+    </g>
+    <path d="m756 438 44 34 44-34v82l-44 32-44-32z" fill="url(#metal)" stroke="#f2efe8" stroke-opacity=".36"/>
+    <rect x="781" y="446" width="38" height="72" rx="15" fill="#101116"/>
+  </g>
+
+  <g opacity=".9">
+    <path d="M544 481 704 572v177l-160-93z" fill="#9b7bff" fill-opacity=".08" stroke="#c4b5ff" stroke-opacity=".26"/>
+    <path d="m566 531 116 66M566 575l116 66M566 619l116 66" stroke="#c4b5ff" stroke-opacity=".16"/>
+    <circle cx="594" cy="551" r="8" fill="#c4b5ff"/><circle cx="650" cy="628" r="8" fill="#c4b5ff"/><circle cx="612" cy="657" r="8" fill="#c4b5ff"/>
+    <path d="m1056 481-160 91v177l160-93z" fill="#9b7bff" fill-opacity=".05" stroke="#c4b5ff" stroke-opacity=".2"/>
+    <path d="m1034 531-116 66M1034 575l-116 66M1034 619l-116 66" stroke="#c4b5ff" stroke-opacity=".12"/>
+  </g>
+
+  <g>
+    <rect x="180" y="672" width="344" height="158" rx="22" fill="#111219" fill-opacity=".92" stroke="#f2efe8" stroke-opacity=".12"/>
+    <text x="216" y="713" fill="#f2efe8" font-family="Arial, sans-serif" font-size="16" font-weight="700">Archive progress</text>
+    <text x="216" y="741" fill="#8e8e98" font-family="monospace" font-size="10">PROJECT_ASSETS.ZIP</text>
+    <rect x="216" y="774" width="272" height="8" rx="4" fill="#292a34"/>
+    <rect x="216" y="774" width="224" height="8" rx="4" fill="url(#purple)"/>
+    <text x="455" y="812" fill="#c4b5ff" font-family="monospace" font-size="11">82%</text>
+  </g>
+
+  <g>
+    <rect x="1076" y="672" width="344" height="158" rx="22" fill="#111219" fill-opacity=".92" stroke="#f2efe8" stroke-opacity=".12"/>
+    <circle cx="1122" cy="718" r="18" fill="#9b7bff" fill-opacity=".2"/>
+    <path d="m1113 718 7 7 13-16" fill="none" stroke="#c4b5ff" stroke-width="4" stroke-linecap="round"/>
+    <text x="1153" y="714" fill="#f2efe8" font-family="Arial, sans-serif" font-size="15" font-weight="700">Compatible ZIP</text>
+    <text x="1153" y="736" fill="#8e8e98" font-family="Arial, sans-serif" font-size="11">Verified &amp; safe</text>
+    <rect x="1110" y="772" width="80" height="28" rx="14" fill="#9b7bff" fill-opacity=".14"/>
+    <text x="1150" y="791" text-anchor="middle" fill="#c4b5ff" font-family="monospace" font-size="9">GPU AUTO</text>
+    <rect x="1198" y="772" width="80" height="28" rx="14" fill="#fff" fill-opacity=".05"/>
+    <text x="1238" y="791" text-anchor="middle" fill="#8e8e98" font-family="monospace" font-size="9">CPU READY</text>
+  </g>
+
+  <ellipse cx="800" cy="888" rx="430" ry="42" fill="#000" opacity=".5" filter="url(#soft)"/>
+  <text x="800" y="947" text-anchor="middle" fill="#8e8e98" font-family="monospace" font-size="11" letter-spacing="6">ZIPER / WINDOWS x64</text>
+</svg>

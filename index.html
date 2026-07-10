@@ -1,238 +1,338 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>XERO // PURPLE INTERFACE</title>
-  <link rel="preload" href="assets/hero-bg.jpg" as="image">
-  <link rel="preload" href="assets/pattern2/sigil.jpg" as="image">
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Share+Tech+Mono&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
-</head>
-<body>
-  <div class="page-bg"></div>
-  <div class="texture-layer"></div>
-  <div class="scanlines"></div>
-  <canvas id="particles"></canvas>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0a0a0d">
+    <meta name="description" content="XERO — AI、Discord Bot、Windowsアプリ、Webサービスの開発実績">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="XERO — Developer & Builder">
+    <meta property="og:description" content="DESIGN / CODE / OPERATE — XERO PORTFOLIO">
+    <meta property="og:image" content="assets/editorial/hero-environment.png">
+    <title>XERO — Developer &amp; Builder</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="preload" href="assets/editorial/hero-environment.webp" as="image" type="image/webp">
+    <link rel="preload" href="assets/editorial/x-monolith.webp" as="image" type="image/webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">本文へ移動</a>
 
-  <div class="bgm-player" id="bgmPlayer" aria-label="BGM toggle">
-    <button class="bgm-toggle" id="bgmToggle" type="button">
-      <span></span><span></span><span></span><span></span><span></span>
-    </button>
-    <span class="bgm-label">BGM</span>
-  </div>
-  <audio id="bgm" loop>
-    <source src="BGM.mp3" type="audio/mpeg">
-  </audio>
-
-  <nav class="nav">
-    <a class="nav-logo glitch" href="#home" data-text="XERO">XERO</a>
-    <div class="nav-links">
-      <a href="#home">HOME</a>
-      <a href="#about">PROFILE</a>
-      <a href="#modules">MODULES</a>
-      <a href="#works">WORKS</a>
-      <a href="#connect">LINKS</a>
+    <div class="ambient" aria-hidden="true">
+      <div class="ambient__glow ambient__glow--one"></div>
+      <div class="ambient__glow ambient__glow--two"></div>
+      <div class="ambient__grid"></div>
+      <div class="ambient__grain"></div>
     </div>
-    <div class="nav-status">
-      <span class="status-dot"></span>
-      <span>LIVE</span>
-    </div>
-  </nav>
+    <div class="scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
 
-  <main>
-    <section class="hero section" id="home">
-      <div class="hero-copy">
-        <span class="eyebrow reveal">[ PURPLE INTERFACE // ONLINE ]</span>
-        <h1 class="hero-title glitch reveal" data-text="XERO">XERO</h1>
-        <p class="hero-type reveal">
-          <span id="typingText"></span><span class="cursor">_</span>
-        </p>
-        <p class="hero-lead reveal">
-          AI開発やソフト制作、サーバー構築の依頼などを受け、サービスを提供しています
-        </p>
-        <div class="hero-actions reveal">
-          <a class="primary-btn" href="#modules">MODULESを見る</a>
-          <a class="ghost-btn" href="#connect">リンクへ</a>
-        </div>
-        <div class="quick-stats reveal">
-          <div><strong>18</strong><span>YEARS OLD</span></div>
-          <div><strong>TOKYO</strong><span>BASE</span></div>
-          <div><strong>AI</strong><span>FOCUS</span></div>
-        </div>
-      </div>
+    <header class="site-header" id="siteHeader">
+      <a class="brand" href="#home" aria-label="XERO ホームへ">
+        <span class="brand__mark">X</span>
+        <span class="brand__name">XERO</span>
+      </a>
+      <nav class="site-nav" aria-label="メインナビゲーション">
+        <a href="#profile">Profile</a>
+        <a href="#works">Work</a>
+        <a href="#capabilities">Stack</a>
+        <a href="#connect">Connect</a>
+      </nav>
+      <span class="header-meta">TOKYO · JP / 19</span>
+    </header>
 
-      <div class="hero-stage reveal" aria-hidden="true">
-        <div class="stage-orbit orbit-a"></div>
-        <div class="stage-orbit orbit-b"></div>
-        <div class="stage-orbit orbit-c"></div>
-        <div class="signal signal-1"></div>
-        <div class="signal signal-2"></div>
-        <div class="sigil-card">
-          <img src="assets/pattern2/sigil.jpg" alt="">
-          <span class="sigil-glow"></span>
-        </div>
-        <div class="asset-chip chip-ai">
-          <img src="assets/pattern2/ai.jpg" alt="">
-          <span>AI DEV</span>
-        </div>
-        <div class="asset-chip chip-bot">
-          <img src="assets/pattern2/bot.jpg" alt="">
-          <span>BOT</span>
-        </div>
-        <div class="asset-chip chip-pc">
-          <img src="assets/pattern2/pc.jpg" alt="">
-          <span>PC BUILD</span>
-        </div>
-      </div>
-    </section>
+    <main id="main">
+      <section class="hero-scroll" id="home" data-hero-scene>
+        <div class="hero-sticky">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <p class="overline reveal-item">XERO / DEVELOPER — TOKYO</p>
+              <h1 class="hero-title reveal-item">
+                <span>IDEA TO</span>
+                <span class="hero-title__accent">SYSTEM</span>
+              </h1>
+              <div class="hero-disciplines reveal-item" aria-label="開発領域">
+                <span><small>01</small>AI開発</span>
+                <span><small>02</small>BOT設計</span>
+                <span><small>03</small>APP / WEB</span>
+                <span><small>04</small>PC構築</span>
+              </div>
+              <div class="hero-actions reveal-item">
+                <a class="button button--solid" href="#works">SELECTED WORK <span aria-hidden="true">↘</span></a>
+                <a class="button button--quiet" href="#profile">PROFILE <span aria-hidden="true">→</span></a>
+              </div>
+              <dl class="hero-facts reveal-item">
+                <div><dt>AGE</dt><dd>19</dd></div>
+                <div><dt>BASE</dt><dd>Tokyo</dd></div>
+                <div><dt>MODE</dt><dd>Build / Ship</dd></div>
+              </dl>
+            </div>
 
-    <section class="about section" id="about">
-      <header class="section-header reveal">
-        <span>// 01</span>
-        <h2>PROFILE</h2>
-        <i></i>
-      </header>
-      <div class="profile-grid">
-        <article class="glass-card reveal">
-          <span class="card-kicker">IDENTITY</span>
-          <h3>XERO</h3>
-          <p>
-            AI開発、Discord Bot、アプリ開発、自作PCをしている18歳のデジタルクリエイターです。
-          </p>
-          <ul class="data-list">
-            <li><span>AGE</span><b>18歳</b></li>
-            <li><span>BASE</span><b>Tokyo, JP</b></li>
-            <li><span>ROLE</span><b>Programmer</b></li>
-            <li><span>FOCUS</span><b>AI / Bot / App</b></li>
-          </ul>
-        </article>
-
-        <article class="glass-card reveal">
-          <span class="card-kicker">LIFESTYLE</span>
-          <h3>VOCATIONAL STUDENT</h3>
-          <p>
-            IT系の専門学校に通いながら、AI、プログラミング、Bot制作などをしています。
-          </p>
-          <div class="pulse-tags">
-            <span>AI</span>
-            <span>APP</span>
-            <span>BOT</span>
-            <span>PC</span>
-            <span>GAME</span>
-            <span>PROGRAMMING</span>
+            <div class="hero-visual" aria-hidden="true">
+              <div class="hero-visual__halo"></div>
+              <div class="hero-visual__number">19</div>
+              <div class="hero-visual__ring hero-visual__ring--outer"></div>
+              <div class="hero-visual__ring hero-visual__ring--inner"></div>
+              <div class="sigil-stack" data-tilt-surface>
+                <div class="sigil-stack__shadow"></div>
+                <div class="sigil-stack__plate sigil-stack__plate--back"></div>
+                <figure class="sigil-stack__image">
+                  <img src="assets/editorial/x-monolith.webp" alt="" width="1254" height="1254">
+                  <span></span>
+                </figure>
+                <div class="sigil-stack__plate sigil-stack__plate--front"></div>
+              </div>
+              <span class="hero-note hero-note--top">MONOLITH / X</span>
+            </div>
           </div>
-        </article>
+          <div class="hero-scroll-cue" aria-hidden="true"><span></span>SCROLL</div>
+        </div>
+      </section>
 
-        <article class="glass-card reveal texture-card">
-          <span class="card-kicker">SKILL SET</span>
-          <h3>BUILD MODULES</h3>
-          <p>
-            AI系の開発やAIを用いたソフト、Discord Bot制作。
-            ハードウェアは事務用PCからゲーミングPCまで、多くの自作経験があります。
-          </p>
-          <ul class="data-list">
-            <li><span>AI</span><b>開発 / 活用</b></li>
-            <li><span>BOT</span><b>Discord Bot</b></li>
-            <li><span>APP</span><b>アプリ開発</b></li>
-            <li><span>PC</span><b>自作PC</b></li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <div class="divider-strip reveal" aria-hidden="true"></div>
-
-    <section class="modules section" id="modules">
-      <header class="section-header reveal">
-        <span>// 02</span>
-        <h2>MODULES</h2>
-        <i></i>
-      </header>
-      <div class="module-grid">
-        <article class="module-card reveal">
-          <img src="assets/pattern2/ai.jpg" alt="AI development visual" loading="lazy">
+      <section class="section profile" id="profile" data-motion-scene>
+        <div class="section-heading section-heading--split reveal-item">
           <div>
-            <span>MAIN</span>
-            <h3>AI DEVELOPMENT</h3>
-            <p>AI系の開発やAIを用いたプロジェクトを進行中。</p>
+            <p class="section-index">01 / PROFILE</p>
+            <h2>BUILDER<br><span class="outline-title">/ TOKYO</span></h2>
           </div>
-        </article>
-        <article class="module-card reveal">
-          <img src="assets/pattern2/bot.jpg" alt="Bot development visual" loading="lazy">
+          <dl class="section-meta">
+            <div><dt>STATUS</dt><dd>IT専門学生</dd></div>
+            <div><dt>ROLE</dt><dd>PROGRAMMER / DEVELOPER</dd></div>
+            <div><dt>FIELD</dt><dd>AI / BOT / APP / WEB / PC</dd></div>
+          </dl>
+        </div>
+
+        <div class="profile-layout">
+          <div class="profile-principles">
+            <article class="profile-principle reveal-item">
+              <span>01 / CONCEPT</span>
+              <h3>構想設計</h3>
+              <div>要件整理 / 体験設計 / 技術選定</div>
+            </article>
+            <article class="profile-principle reveal-item">
+              <span>02 / BUILD</span>
+              <h3>領域横断</h3>
+              <div>UI / BACKEND / AUTOMATION / HARDWARE</div>
+            </article>
+            <article class="profile-principle reveal-item">
+              <span>03 / SHIP</span>
+              <h3>実装運用</h3>
+              <div>PROTOTYPE / RELEASE / OPERATION</div>
+            </article>
+          </div>
+
+          <div class="profile-column">
+            <div class="profile-kinetic" aria-hidden="true">
+              <div class="kinetic-axis"></div>
+              <div class="kinetic-plane kinetic-plane--one" data-depth-plane="0.7"><span>IDEA</span><i>01</i></div>
+              <div class="kinetic-plane kinetic-plane--two" data-depth-plane="1.05"><span>CODE</span><i>02</i></div>
+              <div class="kinetic-plane kinetic-plane--three" data-depth-plane="1.35"><span>SHIP</span><i>03</i></div>
+            </div>
+            <div class="profile-panel depth-card" data-scroll-card>
+              <div class="card-motion">
+                <div class="depth-card__surface profile-panel__surface" data-tilt-card>
+                  <p class="panel-label">IDENTITY / CURRENT</p>
+                  <dl class="profile-data">
+                    <div><dt>Name</dt><dd>XERO</dd></div>
+                    <div><dt>Age</dt><dd>19</dd></div>
+                    <div><dt>Base</dt><dd>Tokyo / Japan</dd></div>
+                    <div><dt>Scope</dt><dd>IDEA / UI / BACKEND / OPS</dd></div>
+                  </dl>
+                  <p class="profile-panel__note">DESIGN / CODE / OPERATE</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section works" id="works" data-motion-scene>
+        <div class="section-heading section-heading--split reveal-item">
           <div>
-            <span>BOT</span>
-            <h3>DISCORD BOTS</h3>
-            <p>管理、音楽、読み上げ、エンタメ機能を持つBotを制作。</p>
+            <p class="section-index">02 / PROJECT INDEX</p>
+            <h2>SELECTED<br><span class="outline-title">WORK / 05</span></h2>
           </div>
-        </article>
-        <article class="module-card reveal">
-          <img src="assets/pattern2/pc.jpg" alt="Custom PC visual" loading="lazy">
+          <dl class="section-meta">
+            <div><dt>WEB</dt><dd>DASHBOARD / API</dd></div>
+            <div><dt>DESKTOP</dt><dd>WINDOWS APPLICATION</dd></div>
+            <div><dt>BOT</dt><dd>DISCORD OPERATIONS</dd></div>
+          </dl>
+        </div>
+
+        <div class="project-list">
+          <div class="project-anchor project-anchor--featured" data-scroll-card>
+            <div class="card-motion">
+              <article class="project project--featured depth-card__surface" data-tilt-card>
+                <div class="project-media">
+                  <div class="project-screen">
+                    <img src="assets/projects/discat-dashboard.svg" alt="Discat Dashboardの管理画面を表現したビジュアル" width="1600" height="1000" loading="lazy">
+                  </div>
+                  <span class="project-media__label">LIVE / WEB APP</span>
+                </div>
+                <div class="project-copy">
+                  <div class="project-topline"><span>01</span><span>2026 / CONTROL PLANE</span></div>
+                  <h3>Discat<br>Dashboard</h3>
+                  <dl class="project-spec">
+                    <div><dt>TYPE</dt><dd>DISCORD BOT CONTROL DASHBOARD</dd></div>
+                    <div><dt>SCOPE</dt><dd>DISCAT ONE / DISCAT GUARD</dd></div>
+                    <div><dt>ONE</dt><dd>歓迎 / 読み上げ / チケット / 一時VC</dd></div>
+                    <div><dt>GUARD</dt><dd>認証 / 荒らし対策 / 危険度判定 / 監査ログ</dd></div>
+                  </dl>
+                  <ul class="tag-list" aria-label="使用技術">
+                    <li>JavaScript</li><li>REST API</li><li>Discord OAuth2</li><li>Cloudflare</li>
+                  </ul>
+                  <a class="project-link" href="https://xero-x.me/Discat-dashboard/" target="_blank" rel="noopener noreferrer">OPEN DASHBOARD <span aria-hidden="true">↗</span></a>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div class="project-secondary-grid">
+            <div class="project-anchor" data-scroll-card>
+              <div class="card-motion">
+                <article class="project project--secondary depth-card__surface" data-tilt-card>
+                  <div class="project-media">
+                    <div class="project-screen">
+                      <img src="assets/projects/ziper.svg" alt="Ziperの圧縮処理を表現したビジュアル" width="1600" height="1000" loading="lazy">
+                    </div>
+                    <span class="project-media__label">WINDOWS / UTILITY</span>
+                  </div>
+                  <div class="project-copy">
+                    <div class="project-topline"><span>02</span><span>2026 / DESKTOP</span></div>
+                    <h3>Ziper</h3>
+                    <dl class="project-spec">
+                      <div><dt>FORMAT</dt><dd>ZIP / ZIPER FAST</dd></div>
+                      <div><dt>CORE</dt><dd>ZIP互換 / 安全な展開</dd></div>
+                      <div><dt>GPU</dt><dd>NVIDIA nvCOMP圧縮</dd></div>
+                      <div><dt>FAILSAFE</dt><dd>GPU → CPU自動切替</dd></div>
+                    </dl>
+                    <ul class="tag-list" aria-label="使用技術"><li>C#</li><li>.NET 8 / WPF</li><li>C++</li><li>CUDA</li></ul>
+                    <a class="project-link" href="https://github.com/xero711/Ziper" target="_blank" rel="noopener noreferrer">VIEW REPOSITORY <span aria-hidden="true">↗</span></a>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <div class="project-anchor" data-scroll-card>
+              <div class="card-motion">
+                <article class="project project--secondary depth-card__surface" data-tilt-card>
+                  <div class="project-media">
+                    <div class="project-screen">
+                      <img src="assets/projects/youtube-save.svg" alt="YoutubeSaveの動画保存機能を表現したビジュアル" width="1600" height="1000" loading="lazy">
+                    </div>
+                    <span class="project-media__label">WINDOWS / MEDIA</span>
+                  </div>
+                  <div class="project-copy">
+                    <div class="project-topline"><span>03</span><span>2026 / DESKTOP</span></div>
+                    <h3>YoutubeSave</h3>
+                    <dl class="project-spec">
+                      <div><dt>OUTPUT</dt><dd>MP4 VIDEO / MP3 AUDIO</dd></div>
+                      <div><dt>QUALITY</dt><dd>2160P–360P / 320–96KBPS</dd></div>
+                      <div><dt>MODE</dt><dd>SINGLE / PLAYLIST</dd></div>
+                      <div><dt>ENGINE</dt><dd>YT-DLP AUTO UPDATE / FFMPEG</dd></div>
+                    </dl>
+                    <ul class="tag-list" aria-label="使用技術"><li>Python</li><li>Tkinter</li><li>yt-dlp</li><li>FFmpeg</li></ul>
+                    <div class="project-links">
+                      <a class="project-link" href="https://github.com/xero711/youtubeSave" target="_blank" rel="noopener noreferrer">VIEW REPOSITORY <span aria-hidden="true">↗</span></a>
+                      <a class="project-link project-link--sub" href="https://github.com/xero711/youtubeSave/releases" target="_blank" rel="noopener noreferrer">RELEASES <span aria-hidden="true">↗</span></a>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bot-work reveal-item">
+          <div class="bot-work__intro">
+            <p class="section-index">04–05 / BOT SERIES</p>
+            <h3>DISCAT<br><span class="outline-title">/ ACTIVE</span></h3>
+            <div class="bot-work__scope"><span>MANAGEMENT</span><span>MUSIC</span><span>TTS</span><span>COMMUNITY</span></div>
+          </div>
+          <a class="bot-row" href="https://discord.com/oauth2/authorize?client_id=1423249399936585848&amp;permissions=4505251478502583&amp;integration_type=0&amp;scope=bot" target="_blank" rel="noopener noreferrer">
+            <span class="bot-row__number">04</span><span><b>Discat</b><small>MANAGEMENT / MUSIC / TTS / SECURITY</small></span><span class="bot-row__status">ACTIVE</span><i aria-hidden="true">↗</i>
+          </a>
+          <a class="bot-row" href="https://discord.com/oauth2/authorize?client_id=1421780520110526619&amp;permissions=2252354400550327&amp;integration_type=0&amp;scope=bot" target="_blank" rel="noopener noreferrer">
+            <span class="bot-row__number">05</span><span><b>Discat V2</b><small>EXTENDED FEATURES / REFINED OPERATION</small></span><span class="bot-row__status">ACTIVE</span><i aria-hidden="true">↗</i>
+          </a>
+        </div>
+      </section>
+
+      <section class="section capabilities" id="capabilities" data-motion-scene>
+        <div class="section-heading section-heading--split reveal-item">
           <div>
-            <span>HARDWARE</span>
-            <h3>CUSTOM PC</h3>
-            <p>事務用からゲーミングPCの自作経験があり、ハードウェアもOK</p>
+            <p class="section-index">03 / CAPABILITY STACK</p>
+            <h2>DESIGN<br><span class="outline-title">BUILD / OPS</span></h2>
           </div>
-        </article>
-      </div>
-    </section>
+          <dl class="section-meta">
+            <div><dt>SOFTWARE</dt><dd>AI / APP / WEB</dd></div>
+            <div><dt>SYSTEM</dt><dd>BOT / AUTOMATION / API</dd></div>
+            <div><dt>HARDWARE</dt><dd>PC DESIGN / BUILD</dd></div>
+          </dl>
+        </div>
 
-    <section class="works section" id="works">
-      <header class="section-header reveal">
-        <span>// 03</span>
-        <h2>WORKS</h2>
-        <i></i>
-      </header>
-      <div class="works-grid">
-        <article class="work-panel reveal">
-          <span class="work-status">ACTIVE</span>
-          <h3>Discat</h3>
-          <p>管理、音楽、読み上げ、エンタメ機能を備えた多機能Discord Bot。</p>
-          <div class="work-tags"><span>管理</span><span>音楽</span><span>TTS</span><span>過疎化対策</span><span>セキュリティ</span></div>
-          <a href="https://discord.com/oauth2/authorize?client_id=1423249399936585848&permissions=4505251478502583&integration_type=0&scope=bot" target="_blank">サーバーに追加</a>
-        </article>
-        <article class="work-panel reveal">
-          <span class="work-status">ACTIVE</span>
-          <h3>Discat V2</h3>
-          <p>Discatにない機能を追加し、使いやすいよう改良。</p>
-          <div class="work-tags"><span>管理</span><span>音楽</span><span>TTS</span><span>バラエティ</span></div>
-          <a href="https://discord.com/oauth2/authorize?client_id=1421780520110526619&permissions=2252354400550327&integration_type=0&scope=bot" target="_blank">サーバーに追加</a>
-        </article>
-        <article class="work-panel reveal">
-          <span class="work-status">RELEASED</span>
-          <h3>YoutubeDownloader</h3>
-          <p>YouTube向けの保存支援ソフト。GitHub Releasesで公開中。</p>
-          <div class="work-tags"><span>Software</span><span>YouTube</span><span>GitHub</span></div>
-          <a href="https://github.com/xero711/youtubeSave/releases/tag/yts" target="_blank">リリースを見る</a>
-        </article>
-      </div>
-    </section>
+        <div class="capability-mosaic">
+          <article class="capability-slot reveal-item">
+            <div class="capability-tile capability-tile--visual" data-depth-plane="0.6" data-tilt-card>
+              <img src="assets/editorial/capability-ai.webp" alt="黒い演算モジュールを積層したAI開発の抽象オブジェクト" width="1448" height="1086" loading="lazy">
+              <div class="capability-tile__copy"><span>01 / SOFTWARE</span><h3>AI DEVELOPMENT</h3><div>機能設計 / PROTOTYPE / AI TOOLING</div></div>
+            </div>
+          </article>
+          <article class="capability-slot reveal-item">
+            <div class="capability-tile capability-tile--visual" data-depth-plane="0.9" data-tilt-card>
+              <img src="assets/editorial/capability-bot.webp" alt="会話と自動化を表現した黒銀のオーケストレーション装置" width="1448" height="1086" loading="lazy">
+              <div class="capability-tile__copy"><span>02 / SYSTEM</span><h3>BOT &amp; AUTOMATION</h3><div>管理 / 音声 / COMMUNITY / API</div></div>
+            </div>
+          </article>
+          <article class="capability-slot reveal-item">
+            <div class="capability-tile capability-tile--code" data-depth-plane="0.75" data-tilt-card>
+              <div class="capability-wireframe" aria-hidden="true"><i></i><i></i><i></i><b>03</b></div>
+              <div class="capability-tile__copy"><span>03 / INTERFACE</span><h3>APP &amp; WEB</h3><div>WINDOWS / DASHBOARD / UI / OPERATION</div></div>
+            </div>
+          </article>
+          <article class="capability-slot reveal-item">
+            <div class="capability-tile capability-tile--visual" data-depth-plane="1.05" data-tilt-card>
+              <img src="assets/editorial/capability-hardware.webp" alt="黒銀のパーツで構成したオープンフレームの自作PC" width="1448" height="1086" loading="lazy">
+              <div class="capability-tile__copy"><span>04 / HARDWARE</span><h3>CUSTOM PC</h3><div>業務 / GAMING / 構成設計 / BUILD</div></div>
+            </div>
+          </article>
+        </div>
+      </section>
 
-    <section class="connect section" id="connect">
-      <header class="section-header reveal">
-        <span>// 04</span>
-        <h2>LINKS</h2>
-        <i></i>
-      </header>
-      <div class="connect-grid">
-        <a class="connect-card reveal" href="https://www.tiktok.com/@00_rei7?_r=1&_t=ZS-95jBbBwwvCM" target="_blank">
-          <span>TIKTOK</span><b>@00_rei7</b><i>↗</i>
-        </a>
-        <a class="connect-card reveal" href="https://x.com/xero_c8?s=21" target="_blank">
-          <span>X</span><b>@xero_c8</b><i>↗</i>
-        </a>
-        <a class="connect-card reveal" href="https://discord.gg/Jutf9VZjaQ" target="_blank">
-          <span>DISCORD</span><b>参加する</b><i>↗</i>
-        </a>
-      </div>
-    </section>
-  </main>
+      <section class="contact" id="connect" data-motion-scene>
+        <div class="contact-background" aria-hidden="true"></div>
+        <div class="contact-inner">
+          <div class="contact-head">
+            <div class="contact-copy">
+              <p class="section-index reveal-item">04 / CONNECT</p>
+              <h2 class="reveal-item">START<br><span>A PROJECT</span></h2>
+              <div class="contact-keywords reveal-item"><span>制作相談</span><span>共同開発</span><span>最新情報</span></div>
+            </div>
+            <div class="contact-portal" aria-hidden="true">
+              <div class="portal-ring portal-ring--one" data-depth-plane="0.55"></div>
+              <div class="portal-ring portal-ring--two" data-depth-plane="0.85"></div>
+              <div class="portal-slab portal-slab--one" data-depth-plane="1.05">X</div>
+              <div class="portal-slab portal-slab--two" data-depth-plane="1.25"></div>
+            </div>
+          </div>
+          <div class="contact-links reveal-item">
+            <a href="https://github.com/xero711" target="_blank" rel="noopener noreferrer"><span>GitHub</span><b>@xero711</b><i aria-hidden="true">↗</i></a>
+            <a href="https://x.com/xero_c8?s=21" target="_blank" rel="noopener noreferrer"><span>X</span><b>@xero_c8</b><i aria-hidden="true">↗</i></a>
+            <a href="https://www.tiktok.com/@00_rei7?_r=1&amp;_t=ZS-95jBbBwwvCM" target="_blank" rel="noopener noreferrer"><span>TikTok</span><b>@00_rei7</b><i aria-hidden="true">↗</i></a>
+            <a href="https://discord.gg/Jutf9VZjaQ" target="_blank" rel="noopener noreferrer"><span>Discord</span><b>COMMUNITY</b><i aria-hidden="true">↗</i></a>
+          </div>
+        </div>
+      </section>
+    </main>
 
-  <footer class="footer">
-    <span class="glitch" data-text="XERO">XERO</span>
-    <p>© 2026 XERO // PURPLE INTERFACE</p>
-  </footer>
+    <footer class="site-footer">
+      <span>XERO / PORTFOLIO</span>
+      <p>TOKYO · JAPAN / © 2026</p>
+      <a href="#home">BACK TO TOP ↑</a>
+    </footer>
 
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

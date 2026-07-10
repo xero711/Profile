@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">YoutubeSave</title>
+  <desc id="desc">動画と音声の品質を選んで保存するデスクトップアプリの抽象表現</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#09090d"/><stop offset="1" stop-color="#18131f"/></linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c4b5ff"/><stop offset="1" stop-color="#7455d9"/></linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#20212a"/><stop offset="1" stop-color="#101116"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#9b7bff" stop-opacity=".4"/><stop offset="1" stop-color="#9b7bff" stop-opacity="0"/></radialGradient>
+    <pattern id="grid" width="58" height="58" patternUnits="userSpaceOnUse"><path d="M58 0H0V58" fill="none" stroke="#fff" stroke-opacity=".032"/></pattern>
+    <filter id="shadow" x="-25%" y="-25%" width="150%" height="170%"><feDropShadow dx="0" dy="38" stdDeviation="44" flood-color="#000" flood-opacity=".62"/></filter>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+  <rect width="1600" height="1000" fill="url(#grid)"/>
+  <circle cx="795" cy="480" r="560" fill="url(#glow)" opacity=".52"/>
+
+  <g filter="url(#shadow)">
+    <rect x="180" y="105" width="1240" height="790" rx="32" fill="#0d0e13" stroke="#f2efe8" stroke-opacity=".2"/>
+    <rect x="210" y="135" width="1180" height="730" rx="20" fill="url(#screen)" stroke="#f2efe8" stroke-opacity=".07"/>
+  </g>
+
+  <g>
+    <circle cx="246" cy="171" r="6" fill="#ee8a9a" opacity=".8"/>
+    <circle cx="268" cy="171" r="6" fill="#e1bd7a" opacity=".8"/>
+    <circle cx="290" cy="171" r="6" fill="#a7e7bd" opacity=".8"/>
+    <text x="800" y="178" text-anchor="middle" fill="#8e8e98" font-family="monospace" font-size="11" letter-spacing="2.5">YOUTUBESAVE / 2.0</text>
+    <path d="M210 205h1180" stroke="#f2efe8" stroke-opacity=".08"/>
+  </g>
+
+  <g>
+    <rect x="258" y="260" width="686" height="382" rx="22" fill="#0b0c11" stroke="#f2efe8" stroke-opacity=".12"/>
+    <rect x="282" y="284" width="638" height="334" rx="14" fill="#181923"/>
+    <path d="M282 520 472 387l122 82 123-112 203 180v81H282z" fill="#9b7bff" fill-opacity=".1"/>
+    <circle cx="483" cy="378" r="64" fill="#c4b5ff" fill-opacity=".08" stroke="#c4b5ff" stroke-opacity=".22"/>
+    <path d="m466 342 52 36-52 36z" fill="#f2efe8"/>
+    <rect x="310" y="560" width="582" height="8" rx="4" fill="#2b2c37"/>
+    <rect x="310" y="560" width="358" height="8" rx="4" fill="url(#accent)"/>
+    <circle cx="668" cy="564" r="9" fill="#c4b5ff"/>
+    <text x="310" y="601" fill="#8e8e98" font-family="monospace" font-size="10">PREVIEW / 00:42:18</text>
+  </g>
+
+  <g>
+    <text x="992" y="288" fill="#f2efe8" font-family="Arial, sans-serif" font-size="24" font-weight="700">Download settings</text>
+    <text x="992" y="318" fill="#8e8e98" font-family="Arial, sans-serif" font-size="12">Choose format and quality</text>
+    <rect x="992" y="354" width="346" height="58" rx="14" fill="#171820" stroke="#f2efe8" stroke-opacity=".1"/>
+    <text x="1016" y="379" fill="#8e8e98" font-family="monospace" font-size="9">FORMAT</text>
+    <text x="1016" y="400" fill="#f2efe8" font-family="Arial, sans-serif" font-size="14">MP4 Video</text>
+    <path d="m1306 379 8 8 8-8" fill="none" stroke="#c4b5ff" stroke-width="2"/>
+
+    <rect x="992" y="430" width="346" height="58" rx="14" fill="#171820" stroke="#f2efe8" stroke-opacity=".1"/>
+    <text x="1016" y="455" fill="#8e8e98" font-family="monospace" font-size="9">QUALITY</text>
+    <text x="1016" y="476" fill="#f2efe8" font-family="Arial, sans-serif" font-size="14">1080p / Best audio</text>
+    <path d="m1306 455 8 8 8-8" fill="none" stroke="#c4b5ff" stroke-width="2"/>
+
+    <rect x="992" y="506" width="346" height="58" rx="14" fill="#171820" stroke="#f2efe8" stroke-opacity=".1"/>
+    <text x="1016" y="531" fill="#8e8e98" font-family="monospace" font-size="9">SAVE TO</text>
+    <text x="1016" y="552" fill="#f2efe8" font-family="Arial, sans-serif" font-size="14">Downloads</text>
+    <path d="M1307 526h16v14h-16z" fill="none" stroke="#c4b5ff" stroke-width="2"/>
+
+    <rect x="992" y="590" width="346" height="58" rx="29" fill="url(#accent)"/>
+    <text x="1144" y="625" text-anchor="middle" fill="#09090d" font-family="Arial, sans-serif" font-size="15" font-weight="700">Start download</text>
+    <path d="M1283 606v22m-10-10 10 10 10-10" fill="none" stroke="#09090d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <g>
+    <rect x="258" y="696" width="1080" height="112" rx="18" fill="#14151c" stroke="#f2efe8" stroke-opacity=".1"/>
+    <rect x="282" y="720" width="64" height="64" rx="13" fill="#242532"/>
+    <path d="m299 737 30 18-30 18z" fill="#c4b5ff"/>
+    <text x="370" y="742" fill="#f2efe8" font-family="Arial, sans-serif" font-size="14" font-weight="700">Building better tools — XERO</text>
+    <text x="370" y="766" fill="#8e8e98" font-family="monospace" font-size="9">MP4 · 1080P · 00:42:18</text>
+    <rect x="370" y="780" width="728" height="6" rx="3" fill="#2a2b35"/>
+    <rect x="370" y="780" width="532" height="6" rx="3" fill="url(#accent)"/>
+    <text x="1124" y="784" fill="#c4b5ff" font-family="monospace" font-size="10">73%</text>
+    <rect x="1190" y="738" width="112" height="34" rx="17" fill="#fff" fill-opacity=".05" stroke="#f2efe8" stroke-opacity=".08"/>
+    <text x="1246" y="760" text-anchor="middle" fill="#8e8e98" font-family="monospace" font-size="9">CANCEL</text>
+  </g>
+
+  <g opacity=".65">
+    <path d="M128 282h82M128 282v82" fill="none" stroke="#c4b5ff" stroke-opacity=".5"/><circle cx="128" cy="282" r="4" fill="#c4b5ff"/>
+    <path d="M1472 718h-82M1472 718v-82" fill="none" stroke="#c4b5ff" stroke-opacity=".5"/><circle cx="1472" cy="718" r="4" fill="#c4b5ff"/>
+    <text x="128" y="260" fill="#8e8e98" font-family="monospace" font-size="10" letter-spacing="2.5">YT-DLP / FFMPEG</text>
+    <text x="1472" y="746" text-anchor="end" fill="#8e8e98" font-family="monospace" font-size="10" letter-spacing="2.5">WINDOWS GUI</text>
+  </g>
+</svg>
